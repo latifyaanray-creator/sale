@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scratch Poster</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  button {
+    margin: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: gold;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 90px);
+    gap: 15px;
+  }
+
+  .circle {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .active {
+    outline: 2px solid gold;
+  }
+</style>
+</head>
+
+<body>
+
+<button onclick="resetAll()">Reset 🔄</button>
+
+<div class="grid">
+
+  <!-- 🔥 ADD YOUR IMAGES HERE (JUST DUPLICATE) -->
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set1.jpeg"><canvas>1</canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set2.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set3.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set4.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set5.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set6.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set7.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set8.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set9.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set10.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set11.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set12.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set13.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set14.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set15.jpeg"><canvas></canvas></div> 
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set16.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set17.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set18.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set19.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set20.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set21.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set22.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set23.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set24.jpeg"><canvas></canvas></div>
+  <div class="circle"><img src="c:\Users\latif\OneDrive\Documents\set25.jpeg"><canvas></canvas></div>
+</div>
+
+<script>
+const circles = document.querySelectorAll(".circle");
+
+circles.forEach((circle, index) => {
+  const canvas = circle.querySelector("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = 90;
+  canvas.height = 90;
+
+  function cover() {
+    let gradient = ctx.createLinearGradient(0, 0, 90, 90);
+    gradient.addColorStop(0, "#FFD700");
+    gradient.addColorStop(0.5, "#FFC300");
+    gradient.addColorStop(1, "#FFB000");
+
+    ctx.globalCompositeOperation = "source-over";
+
+    // Draw gold circle
+    ctx.beginPath();
+    ctx.arc(45, 45, 45, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    // ✨ ADD NUMBER
+    ctx.fillStyle = "#000";
+    ctx.font = "bold 24px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(index + 1, 45, 45);
+  }
+
+  cover();
+
+  let active = false;
+
+  circle.addEventListener("click", () => {
+    document.querySelectorAll(".circle").forEach(c => c.classList.remove("active"));
+    circle.classList.add("active");
+    active = true;
+  });
+
+  function scratch(e) {
+    if (!active) return;
+
+    let rect = canvas.getBoundingClientRect();
+    let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  canvas.addEventListener("mousemove", scratch);
+  canvas.addEventListener("touchmove", scratch);
+
+  circle.cover = cover;
+});
+
+// RESET
+function resetAll() {
+  circles.forEach(circle => {
+    circle.cover();
+    circle.classList.remove("active");
+  });
+}
+</script>
